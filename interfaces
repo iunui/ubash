@@ -1,7 +1,7 @@
 auto lo
 iface lo inet loopback
 
-#ifconfig > view name > eth0, enp0s2...
+# nano /etc/network/interfaces > eth0, enp0s2...
 auto lo enp0s2
 iface enp0s2 inet static
     address 192.168.1.240
