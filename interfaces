@@ -5,7 +5,7 @@ iface lo inet loopback
 auto lo enp0s2
 iface enp0s2 inet static
     address 192.168.1.240
-    netmask 255.255.255.0
+    gateway 192.168.1.100
     network 192.168.1.0
-    gateway 192.168.1.1
+    netmask 255.255.255.0
     dns-nameservers 8.8.8.8 8.8.4.4
