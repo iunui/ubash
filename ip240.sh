@@ -5,4 +5,4 @@ sudo mv /etc/network/interfaces /etc/network/interfaces.auto
 sudo cp ./interfaces /etc/network/interfaces
 
 # restart networking eth0, enp0s2
-sudo /etc/init.d/networking restart
+sudo service networking restart
