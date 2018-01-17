@@ -22,7 +22,10 @@ IS_ENTERPRISE="False"
 
 echo -e "\n---- Update Server ----"
 sudo apt-get update && sudo apt-get -y upgrade
-
+echo -e "\n---- open port 22, odoo ----"
+sudo ufw allow ssh
+sudo ufw allow $OE_PORT/tcp
+sudo ufw enable
 echo -e "\n---- Install WKHTMLTOPDF ----"
 sudo apt-get install -y wkhtmltopdf
 
@@ -99,9 +102,7 @@ echo -e "\n---- Setting permissions on home folder ----"
 sudo chown -R $OE_USER:$OE_USER $OE_HOME/*
 
 echo -e "* Create server config file"
-
 sudo touch /etc/${OE_CONFIG}.conf
-echo -e "* Creating server config file"
 sudo su root -c "printf '[options] \n; This is the password that allows database operations:\n' >> /etc/${OE_CONFIG}.conf"
 sudo su root -c "printf 'admin_passwd = ${OE_SUPERADMIN}\n' >> /etc/${OE_CONFIG}.conf"
 sudo su root -c "printf 'xmlrpc_port = ${OE_PORT}\n' >> /etc/${OE_CONFIG}.conf"
