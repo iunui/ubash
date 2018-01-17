@@ -6,54 +6,33 @@
 # This script will install Odoo on your Ubuntu 16.04 server. It can install multiple Odoo instances
 # in one Ubuntu because of the different xmlrpc_ports
 #-------------------------------------------------------------------------------
-# Make a new file:
-# sudo nano odoo-install.sh
-# Place this content in it and then make the file executable:
-# sudo chmod +x odoo-install.sh
-# Execute the script to install Odoo:
-# ./odoo-install
-################################################################################
 
 ##fixed parameters
 #odoo
+OE_VERSION="11.0"
+OE_PORT="8069"
 OE_USER="odoo"
 OE_HOME="/$OE_USER"
 OE_HOME_EXT="/$OE_USER/${OE_USER}-server"
-#The default port where this Odoo instance will run under (provided you use the command -c in the terminal)
-#Set to true if you want to install it, false if you don't need it or have it already installed.
-INSTALL_WKHTMLTOPDF="True"
-#Set the default Odoo port (you still have to use -c /etc/odoo-server.conf for example to use this.)
-OE_PORT="8069"
-#Choose the Odoo version which you want to install. For example: 11.0, 10.0, 9.0 or saas-18. When using 'master' the master version will be installed.
-#IMPORTANT! This script contains extra libraries that are specifically needed for Odoo 11.0
-OE_VERSION="11.0"
-# Set this to True/False if you want to install Odoo 11 Enterprise!
-IS_ENTERPRISE="False"
+OE_CONFIG="${OE_USER}-server"
 #set the superadmin password
 OE_SUPERADMIN="0908510260"
-OE_CONFIG="${OE_USER}-server"
-#--------------------------------------------------
-# Update Server
-#--------------------------------------------------
+# Set this to True/False if you want to install Odoo 11 Enterprise!
+IS_ENTERPRISE="False"
+
 echo -e "\n---- Update Server ----"
-sudo apt-get update
-sudo apt-get -y upgrade
+sudo apt-get update && sudo apt-get -y upgrade
 
 echo -e "\n---- Install WKHTMLTOPDF ----"
 sudo apt-get install -y wkhtmltopdf
 
-#--------------------------------------------------
-# Install PostgreSQL Server
-#--------------------------------------------------
 echo -e "\n---- Install PostgreSQL Server ----"
 sudo apt-get install -y postgresql
 
 echo -e "\n---- Creating the ODOO PostgreSQL User  ----"
 sudo su - postgres -c "createuser -s $OE_USER" 2> /dev/null || true
 
-#--------------------------------------------------
-# Install Dependencies
-#--------------------------------------------------
+
 echo -e "\n---- Install tool packages ----"
 sudo apt-get install -y wget git bzr python-pip gdebi-core
 
@@ -69,9 +48,7 @@ echo -e "\n---- Install python libraries ----"
 sudo apt-get install -y python3-suds
 
 echo -e "\n--- Install other required packages"
-sudo apt-get install -y node-clean-css
-sudo apt-get install -y node-less
-sudo apt-get install -y python-gevent
+sudo apt-get install -y node-clean-css node-less python-gevent
 
 echo -e "\n---- Create ODOO system user ----"
 sudo adduser --system --quiet --shell=/bin/bash --home=$OE_HOME --gecos 'ODOO' --group $OE_USER
